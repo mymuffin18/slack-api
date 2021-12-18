@@ -1,5 +1,4 @@
 import LoginForm from './components/LoginForm';
-import Test from './components/Test';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContextProvider';
 import ProtectedRoutes from './components/ProtectedRoutes';
@@ -28,7 +27,6 @@ function App() {
 						}
 					/>
 					<Route path='register' element={<Register />} />
-					{/* <Route path='test' element={<Test />} /> */}
 				</Routes>
 			</BrowserRouter>
 		</>
