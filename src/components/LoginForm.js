@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useAuth } from '../context/AuthContextProvider';
 
@@ -37,6 +38,7 @@ function LoginForm() {
 				onChange={(e) => setPassword((p) => e.target.value)}
 			/>
 			<button onClick={(e) => handleLogin(e)}>Login</button>
+			<Link to='/register'>Don't have an account?</Link>
 			{error &&
 				error.map((e, i) => (
 					<span key={i} className='text-red-500'>
