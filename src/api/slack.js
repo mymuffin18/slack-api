@@ -19,15 +19,31 @@ export const getMessages = async (headers, id) => {
 };
 
 export const getUsers = async (headers) => {
+	let users = [];
 	try {
 		const res = await axios.get(`${API_URL}/users`, {
 			headers: {
 				...headers,
 			},
 		});
-
-		console.log(res.data);
+		users = res.data.data;
 	} catch (e) {
 		console.log(e.response);
 	}
+
+	return users;
 };
+
+export const getChannels = async (headers) => {
+	try {
+		const res = await axios.get(`${API_URL}/channels`, {
+			headers: {
+				...headers,
+			},
+		});
+
+		console.log('????', res);
+	} catch (error) {}
+};
+
+export const createChannel = async (headers) => {};
