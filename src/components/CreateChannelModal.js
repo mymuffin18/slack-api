@@ -11,13 +11,16 @@ const CreateChannelModal = () => {
 	const [toggleUserList, setToggleUserList] = useState(false);
 	const [filteredEmails, setFilteredEmails] = useState([]);
 	const [search, setSearch] = useState('');
+
+	const [users, setUsers] = useState([]);
+
 	const { state } = useAuth();
 	useEffect(() => {
 		(async () => {
 			const data = await getUsers(state.headers);
 			setUserList(data);
 		})();
-	}, []);
+	}, [state.headers]);
 
 	useEffect(() => {
 		if (search === '') {
@@ -32,6 +35,12 @@ const CreateChannelModal = () => {
 			);
 		}
 	}, [search, userList]);
+
+	const handleAdd = (e, user) => {
+		e.preventDefault();
+		setUsers([...users, user]);
+		setToggleUserList((t) => !t);
+	};
 	return ReactDOM.createPortal(
 		<div className='fixed h-full top-0 w-full flex items-center justify-center bg-darkish'>
 			<div className='modal gap-2'>
@@ -59,8 +68,9 @@ const CreateChannelModal = () => {
 						<FaPlusSquare size={26} />
 					</div>
 				</div>
+
 				{toggleAddUser && (
-					<div className='overflow-y-auto'>
+					<div className='flex flex-col items-center'>
 						<div className='relative'>
 							<input
 								type='text'
@@ -90,17 +100,49 @@ const CreateChannelModal = () => {
 							</svg>
 						</div>
 						{toggleUserList && (
-							<ul class='bg-white border border-gray-100 w-full mt-2 '>
+							<ul className='bg-white border border-gray-100 mt-2 w-1/2 overflow-y-auto overflow-x-hidden flex flex-col items-center'>
 								{filteredEmails &&
 									filteredEmails.map((user) => (
-										<li class='pl-8 pr-2 py-1 border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'>
+										<li
+											key={user.id}
+											className='py-1 border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'
+											onClick={(e) =>
+												handleAdd(e, user)
+											}
+										>
 											{user.email}
 										</li>
 									))}
 							</ul>
 						)}
+						<ul className='overflow-y-auto w-full'>
+							{users &&
+								users.map((user) => (
+									<li
+										key={user.id}
+										className='py-5 w-full flex justify-between items-center'
+									>
+										<span>{user.email}</span>
+										<button
+											class='px-4 py-1 bg-red-700 text-white hover:bg-red-500'
+											onClick={() =>
+												setUsers(
+													users.filter(
+														(u) =>
+															u.id !==
+															user.id
+													)
+												)
+											}
+										>
+											Remove
+										</button>
+									</li>
+								))}
+						</ul>
 					</div>
 				)}
+
 				<div>
 					<button className='px-4 py-2 bg-blue-500 text-white cursor-pointer hover:bg-blue-400 transition-all'>
 						Submit
