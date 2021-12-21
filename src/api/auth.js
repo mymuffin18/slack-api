@@ -40,7 +40,7 @@ export const register = async (email, password, confirm_password) => {
 		headers['expiry'] = res.headers['expiry'];
 		headers['uid'] = res.headers['uid'];
 
-		console.log(res.data);
+		console.log(res);
 	} catch (error) {
 		errors = error.response.data.errors;
 	}

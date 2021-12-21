@@ -44,7 +44,7 @@ export const getChannels = async (headers) => {
 		});
 
 		data = res.data.data;
-		console.log(data);
+		console.log(res);
 	} catch (error) {
 		console.error(error.response);
 	}

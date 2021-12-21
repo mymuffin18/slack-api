@@ -31,8 +31,9 @@ const ChannelContextProvider = (props) => {
 	useEffect(() => {
 		(async () => {
 			const data = await getChannels(authState.headers);
-
-			dispatch({ type: 'GET_CHANNELS', payload: data });
+			if (data !== undefined) {
+				dispatch({ type: 'GET_CHANNELS', payload: data });
+			}
 		})();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
