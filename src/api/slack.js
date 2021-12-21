@@ -69,7 +69,7 @@ export const createChannel = async (users, channelName, headers) => {
 			}
 		);
 
-		data = res.data;
+		data = res.data.data;
 		status = res.status;
 	} catch (error) {
 		console.error(error.response);

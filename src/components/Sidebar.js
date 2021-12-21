@@ -10,7 +10,6 @@ const Sidebar = () => {
 	const [toggleCreateModal, setToggleCreateModal] = useState(false);
 
 	const { state: channelState } = useChannels();
-
 	const openModal = (e) => {
 		e.preventDefault();
 		setToggleCreateModal((t) => !t);
