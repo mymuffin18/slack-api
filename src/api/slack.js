@@ -35,6 +35,7 @@ export const getUsers = async (headers) => {
 };
 
 export const getChannels = async (headers) => {
+	let data = [];
 	try {
 		const res = await axios.get(`${API_URL}/channels`, {
 			headers: {
@@ -42,8 +43,36 @@ export const getChannels = async (headers) => {
 			},
 		});
 
-		console.log('????', res);
-	} catch (error) {}
+		data = res.data.data;
+		console.log(data);
+	} catch (error) {
+		console.error(error.response);
+	}
+
+	return data;
 };
 
-export const createChannel = async (headers) => {};
+export const createChannel = async (users, channelName, headers) => {
+	let status;
+	let data = [];
+	try {
+		const res = await axios.post(
+			`${API_URL}/channels`,
+			{
+				name: channelName,
+				user_ids: users.map((user) => user.id),
+			},
+			{
+				headers: {
+					...headers,
+				},
+			}
+		);
+
+		data = res.data;
+	} catch (error) {
+		console.error(error.response);
+	}
+
+	return [data, status];
+};

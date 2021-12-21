@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
-import { getChannels } from '../api/slack';
+import React from 'react';
+
 import { useAuth } from '../context/AuthContextProvider';
 import Sidebar from './Sidebar';
-import CreateChannelModal from './CreateChannelModal';
 
 function Dashboard() {
-	const { state, dispatch } = useAuth();
+	const { dispatch } = useAuth();
 	const logoutHandler = (e) => {
 		e.preventDefault();
 		dispatch({ type: 'LOGOUT' });
 	};
 
-	useEffect(() => {
-		getChannels(state.headers);
-	}, [state.headers]);
 	return (
 		<div className='h-screen grid grid-flow-col'>
 			<div className='grid-cols-1'>
 				<Sidebar />
 			</div>
-			<div className='grid-cols-9'>
+			<div className='grid-cols-11'>
 				<h1>Dashboard</h1>
 				<button
 					className='px-4 py-2 bg-red-500 text-white'
@@ -28,7 +24,6 @@ function Dashboard() {
 					Logout
 				</button>
 			</div>
-			<CreateChannelModal />
 		</div>
 	);
 }

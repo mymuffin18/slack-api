@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { FaPlusSquare } from 'react-icons/fa';
-import { getUsers } from '../api/slack';
+import { createChannel, getUsers } from '../api/slack';
 import { useAuth } from '../context/AuthContextProvider';
+import { useChannels } from '../context/ChannelContextProvider';
 
-const CreateChannelModal = () => {
+const CreateChannelModal = (props) => {
 	const [channelName, setChannelName] = useState('');
 	const [toggleAddUser, setToggleAddUser] = useState(false);
 	const [userList, setUserList] = useState([]);
@@ -13,14 +14,15 @@ const CreateChannelModal = () => {
 	const [search, setSearch] = useState('');
 
 	const [users, setUsers] = useState([]);
-
 	const { state } = useAuth();
+	const { dispatch: channelDispatch } = useChannels();
 	useEffect(() => {
 		(async () => {
 			const data = await getUsers(state.headers);
 			setUserList(data);
 		})();
-	}, [state.headers]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		if (search === '') {
@@ -40,6 +42,32 @@ const CreateChannelModal = () => {
 		e.preventDefault();
 		setUsers([...users, user]);
 		setToggleUserList((t) => !t);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const [data, status] = await createChannel(
+			users,
+			channelName,
+			state.headers
+		);
+		if (status === 200) {
+			alert('You created a new channel!');
+			channelDispatch({ type: 'ADD_CHANNEL', payload: data });
+			props.setToggleCreateModal((t) => !t);
+		}
+	};
+
+	useEffect(() => {
+		return () => {
+			setChannelName('');
+			setUserList([]);
+		};
+	});
+
+	const handleClose = (e) => {
+		e.preventDefault();
+		props.setToggleCreateModal((t) => !t);
 	};
 	return ReactDOM.createPortal(
 		<div className='fixed h-full top-0 w-full flex items-center justify-center bg-darkish'>
@@ -79,6 +107,7 @@ const CreateChannelModal = () => {
 								onClick={() =>
 									setToggleUserList((t) => !t)
 								}
+								onBlur={setToggleUserList((t) => !t)}
 								value={search}
 								onChange={(e) =>
 									setSearch((s) => e.target.value)
@@ -143,8 +172,12 @@ const CreateChannelModal = () => {
 					</div>
 				)}
 
-				<div>
-					<button className='px-4 py-2 bg-blue-500 text-white cursor-pointer hover:bg-blue-400 transition-all'>
+				<div className='flex justify-between'>
+					<button onClick={(e) => handleClose(e)}>Close</button>
+					<button
+						className='px-4 py-2 bg-blue-500 text-white cursor-pointer hover:bg-blue-400 transition-all'
+						onClick={(e) => handleSubmit(e)}
+					>
 						Submit
 					</button>
 				</div>
