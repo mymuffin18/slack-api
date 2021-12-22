@@ -13,3 +13,4 @@
 
 -    [x] REACT ROUTER LINK AND OUTLET FOR CHANNELS
 -    [ ] Get users by their ids
+-    [ ] Channel messages
