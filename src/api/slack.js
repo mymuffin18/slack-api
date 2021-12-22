@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from './url';
 
-export const getMessages = async (headers, id) => {
+export const getUserMessages = async (headers, id) => {
 	try {
 		const res = await axios.get(
 			`${API_URL}/messages?receiver_id=${id}&receiver_class=User`,
@@ -15,6 +15,36 @@ export const getMessages = async (headers, id) => {
 		console.log(res.data);
 	} catch (error) {
 		console.log(error.response.data.errors);
+	}
+};
+
+export const getChannelMessages = async (headers, id) => {
+	try {
+		const res = await axios.get(
+			`${API_URL}/messages?receiver_id=${id}&receiver_class=Channel`,
+			{
+				headers: {
+					...headers,
+				},
+			}
+		);
+		console.log(res);
+	} catch (error) {
+		console.error(error.response);
+	}
+};
+
+export const getChannelDetail = async (headers, id) => {
+	try {
+		const res = await axios.get(`${API_URL}/channels/${id}`, {
+			headers: {
+				...headers,
+			},
+		});
+
+		console.log(res);
+	} catch (error) {
+		console.error(error.response);
 	}
 };
 

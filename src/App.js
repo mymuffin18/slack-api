@@ -5,6 +5,7 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import Dashboard from './components/Dashboard';
 import Register from './components/Register';
 import ChannelContextProvider from './context/ChannelContextProvider';
+import Channel from './components/Channel';
 
 function App() {
 	const { state } = useAuth();
@@ -27,7 +28,12 @@ function App() {
 									<Dashboard />
 								</ProtectedRoutes>
 							}
-						/>
+						>
+							<Route
+								path='channels/:id'
+								element={<Channel />}
+							/>
+						</Route>
 						<Route path='register' element={<Register />} />
 					</Routes>
 				</BrowserRouter>

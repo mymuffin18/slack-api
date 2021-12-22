@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContextProvider';
 
 import { useChannels } from '../context/ChannelContextProvider';
 import CreateChannelModal from './CreateChannelModal';
@@ -9,6 +11,12 @@ const Sidebar = () => {
 	const [msgToggle, setMsgToggle] = useState(false);
 	const [toggleCreateModal, setToggleCreateModal] = useState(false);
 
+	const { dispatch } = useAuth();
+	const logoutHandler = (e) => {
+		e.preventDefault();
+		dispatch({ type: 'LOGOUT' });
+	};
+
 	const { state: channelState } = useChannels();
 	const openModal = (e) => {
 		e.preventDefault();
@@ -16,7 +24,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className='w-64 bg-slate-900 h-full min-h-full text-white'>
+		<div className=' bg-slate-900 h-full min-h-full text-white'>
 			<div className='p-7 flex flex-col gap-2 items-center'>
 				<h1 className='text-white text-center'>Slacker</h1>
 				<div className='w-full'>
@@ -48,11 +56,17 @@ const Sidebar = () => {
 					</div>
 				</div>
 				{channelToggle && (
-					<div className='flex flex-col'>
+					<ul className='flex flex-col'>
 						{channelState.channels.map((channel) => (
-							<div key={channel.id}>{channel.name}</div>
+							<li key={channel.id}>
+								<Link
+									to={`/dashboard/channels/${channel.id}`}
+								>
+									{channel.name}
+								</Link>
+							</li>
 						))}
-					</div>
+					</ul>
 				)}
 				{toggleCreateModal && (
 					<CreateChannelModal
@@ -75,6 +89,14 @@ const Sidebar = () => {
 						<FaAngleRight />
 					</div>
 				</div>
+			</div>
+			<div className='flex flex-col justify'>
+				<button
+					className='px-4 py-2 bg-red-500 text-white'
+					onClick={(e) => logoutHandler(e)}
+				>
+					Logout
+				</button>
 			</div>
 		</div>
 	);
