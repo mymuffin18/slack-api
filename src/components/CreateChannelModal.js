@@ -67,7 +67,7 @@ const CreateChannelModal = (props) => {
 		props.setToggleCreateModal((t) => !t);
 	};
 	return ReactDOM.createPortal(
-		<div className='fixed h-full top-0 w-full flex items-center justify-center bg-darkish'>
+		<div className='modal-bg bg-darkish'>
 			<div className='modal gap-2'>
 				<div className='mt-5'>
 					<h1 className='text-center'>Create Channel</h1>

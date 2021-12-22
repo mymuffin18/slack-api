@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import Register from './components/Register';
 import ChannelContextProvider from './context/ChannelContextProvider';
 import Channel from './components/Channel';
+import UsersContextProvider from './context/UsersContextProvider';
 
 function App() {
 	const { state } = useAuth();
@@ -18,25 +19,30 @@ function App() {
 	return (
 		<>
 			<ChannelContextProvider>
-				<BrowserRouter>
-					<Routes>
-						<Route path='/' element={redirectRoute} />
-						<Route
-							path='dashboard'
-							element={
-								<ProtectedRoutes>
-									<Dashboard />
-								</ProtectedRoutes>
-							}
-						>
+				<UsersContextProvider>
+					<BrowserRouter>
+						<Routes>
+							<Route path='/' element={redirectRoute} />
 							<Route
-								path='channels/:id'
-								element={<Channel />}
+								path='dashboard'
+								element={
+									<ProtectedRoutes>
+										<Dashboard />
+									</ProtectedRoutes>
+								}
+							>
+								<Route
+									path='channels/:id'
+									element={<Channel />}
+								/>
+							</Route>
+							<Route
+								path='register'
+								element={<Register />}
 							/>
-						</Route>
-						<Route path='register' element={<Register />} />
-					</Routes>
-				</BrowserRouter>
+						</Routes>
+					</BrowserRouter>
+				</UsersContextProvider>
 			</ChannelContextProvider>
 		</>
 	);

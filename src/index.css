@@ -39,4 +39,12 @@
 	.btn-primary {
 		@apply bg-blue-600 hover:bg-blue-400;
 	}
+
+	.btn-danger {
+		@apply bg-red-600 hover:bg-red-400;
+	}
+
+	.modal-bg {
+		@apply fixed h-full top-0 w-full flex items-center justify-center;
+	}
 }
