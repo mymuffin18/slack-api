@@ -19,6 +19,7 @@ export const getUserMessages = async (headers, id) => {
 };
 
 export const getChannelMessages = async (headers, id) => {
+	let data = [];
 	try {
 		const res = await axios.get(
 			`${API_URL}/messages?receiver_id=${id}&receiver_class=Channel`,
@@ -28,10 +29,12 @@ export const getChannelMessages = async (headers, id) => {
 				},
 			}
 		);
-		console.log(res);
+		data = res.data.data;
 	} catch (error) {
 		console.error(error.response);
 	}
+
+	return data;
 };
 
 export const getChannelDetail = async (headers, id) => {
@@ -134,4 +137,25 @@ export const createChannel = async (users, channelName, headers) => {
 	}
 
 	return [data, status];
+};
+
+export const sendMessage = async (headers, id, receiverClass, body) => {
+	try {
+		const res = await axios.post(
+			`${API_URL}/messages`,
+			{
+				receiver_id: id,
+				receiver_class: receiverClass, // 'Channel' 'User
+				body: body,
+			},
+			{
+				headers: {
+					...headers,
+				},
+			}
+		);
+		console.log(res);
+	} catch (error) {
+		console.error(error.response);
+	}
 };

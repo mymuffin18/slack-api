@@ -27,6 +27,11 @@
 	overflow-y: auto;
 }
 
+/* quick fix might change later */
+.chat-box {
+	height: 601px;
+}
+
 @layer components {
 	.nav-button {
 		@apply py-2 px-4 text-white cursor-pointer hover:bg-slate-500;

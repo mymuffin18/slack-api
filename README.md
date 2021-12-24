@@ -5,12 +5,13 @@
 -    [x] User is able to create new channel
 -    [x] User is able to add users on a channel
 -    [ ] User is able to send message to other user (Direct message)
--    [ ] User is able to send message to a channel
+-    [x] User is able to send message to a channel
 -    [ ] User is able to receive message from other user (Direct message)
--    [ ] User is able to receive message from his/her channels
+-    [x] User is able to receive message from his/her channels
 
 # TODO
 
 -    [x] REACT ROUTER LINK AND OUTLET FOR CHANNELS
--    [ ] Get users by their ids
--    [ ] Channel messages
+-    [x] Get users by their ids
+-    [x] Channel messages
+-    [ ] Channel messages design
