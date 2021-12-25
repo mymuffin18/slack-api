@@ -89,6 +89,9 @@ const Sidebar = () => {
 						<FaAngleRight />
 					</div>
 				</div>
+				<div className='flex flex-col'>
+					<Link to='/dashboard/messages/'>Send Message</Link>
+				</div>
 			</div>
 			<div className='flex flex-col justify'>
 				<button

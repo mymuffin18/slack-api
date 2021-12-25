@@ -38,7 +38,7 @@
 	}
 
 	.btn {
-		@apply py-2 px-4 text-white cursor-pointer rounded-md;
+		@apply py-2 px-4 text-white cursor-pointer rounded-md transition-all;
 	}
 
 	.btn-primary {
@@ -51,5 +51,9 @@
 
 	.modal-bg {
 		@apply fixed h-full top-0 w-full flex items-center justify-center;
+	}
+
+	.chat-bubble {
+		@apply p-4 bg-blue-500  w-32 rounded-md;
 	}
 }

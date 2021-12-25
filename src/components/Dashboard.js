@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-
+import { getUserMessages } from '../api/slack';
+import { useAuth } from '../context/AuthContextProvider';
 import Sidebar from './Sidebar';
 
 function Dashboard() {
+	const { state } = useAuth();
+	useEffect(() => {
+		(async () => {
+			await getUserMessages(state.headers, state.id);
+		})();
+	}, []);
 	return (
 		<div className='h-screen grid grid-cols-12'>
 			<div className='col-span-2 hidden sm:block'>

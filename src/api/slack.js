@@ -12,7 +12,7 @@ export const getUserMessages = async (headers, id) => {
 			}
 		);
 
-		console.log(res.data);
+		console.log(res);
 	} catch (error) {
 		console.log(error.response.data.errors);
 	}
@@ -30,6 +30,7 @@ export const getChannelMessages = async (headers, id) => {
 			}
 		);
 		data = res.data.data;
+		console.log(res);
 	} catch (error) {
 		console.error(error.response);
 	}

@@ -21,12 +21,13 @@ const Channel = () => {
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
 	const spanRef = useRef();
-
+	const inputRef = useRef();
 	useEffect(() => {
 		(async () => {
 			const data = await getChannelDetail(state.headers, params.id);
 			setChannelData(data);
 		})();
+		inputRef.current.focus();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params.id]);
 
@@ -99,26 +100,42 @@ const Channel = () => {
 					</div>
 				</div>
 				<div className='bg-blue-300 chat-box overflow-y-auto'>
-					{messages.map((msg, index) => (
-						<div
-							ref={
-								messages.length - 1 === index
-									? spanRef
-									: null
-							}
-						>
-							{msg.body}
-						</div>
-					))}
-					<span ref={spanRef}></span>
+					<div className='flex flex-col gap-3 px-2'>
+						{messages.map((msg, index) => (
+							<div
+								key={msg.id}
+								className={`${
+									msg.sender.id === state.user.id
+										? 'self-end'
+										: 'self-start'
+								}`}
+							>
+								<span className='text-sm'>
+									{msg.sender.email}
+								</span>
+								<div
+									className='flex chat-bubble'
+									ref={
+										messages.length - 1 === index
+											? spanRef
+											: null
+									}
+								>
+									{msg.body}
+								</div>
+							</div>
+						))}
+						<span ref={spanRef}></span>
+					</div>
 				</div>
 				<form onSubmit={(e) => handleSend(e)}>
 					<div className='bg-red-300 h-20 flex items-center justify-center gap-3'>
 						<textarea
 							name=''
-							className='resize-none w-5/6'
+							className='resize-none w-5/6 rounded-lg'
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
+							ref={inputRef}
 						></textarea>
 						<button className='btn btn-primary' type='submit'>
 							Send

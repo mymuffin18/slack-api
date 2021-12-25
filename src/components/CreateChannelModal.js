@@ -168,10 +168,15 @@ const CreateChannelModal = (props) => {
 					</div>
 				)}
 
-				<div className='flex justify-between'>
-					<button onClick={(e) => handleClose(e)}>Close</button>
+				<div className='flex justify-center gap-3 w-1/2'>
 					<button
-						className='px-4 py-2 bg-blue-500 text-white cursor-pointer hover:bg-blue-400 transition-all'
+						onClick={(e) => handleClose(e)}
+						className='btn btn-danger'
+					>
+						Close
+					</button>
+					<button
+						className='btn btn-primary'
 						onClick={(e) => handleSubmit(e)}
 					>
 						Submit
