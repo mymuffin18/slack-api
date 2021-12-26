@@ -2,6 +2,7 @@ import axios from 'axios';
 import { API_URL } from './url';
 
 export const getUserMessages = async (headers, id) => {
+	let data = [];
 	try {
 		const res = await axios.get(
 			`${API_URL}/messages?receiver_id=${id}&receiver_class=User`,
@@ -12,10 +13,11 @@ export const getUserMessages = async (headers, id) => {
 			}
 		);
 
-		console.log(res);
+		data = res.data.data;
 	} catch (error) {
-		console.log(error.response.data.errors);
+		console.error(error);
 	}
+	return data;
 };
 
 export const getChannelMessages = async (headers, id) => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+
 import { useAuth } from '../context/AuthContextProvider';
 
 import { useChannels } from '../context/ChannelContextProvider';

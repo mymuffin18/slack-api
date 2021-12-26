@@ -5,12 +5,6 @@ import { useAuth } from '../context/AuthContextProvider';
 import Sidebar from './Sidebar';
 
 function Dashboard() {
-	const { state } = useAuth();
-	useEffect(() => {
-		(async () => {
-			await getUserMessages(state.headers, state.id);
-		})();
-	}, []);
 	return (
 		<div className='h-screen grid grid-cols-12'>
 			<div className='col-span-2 hidden sm:block'>
