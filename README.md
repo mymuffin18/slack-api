@@ -14,4 +14,10 @@
 -    [x] REACT ROUTER LINK AND OUTLET FOR CHANNELS
 -    [x] Get users by their ids
 -    [x] Channel messages
--    [x] Channel messages design
+-    [ ] Channel messages design
+-    [ ] Direct messages design
+-    [x] list of users
+-    [x] swr
+-    [ ] Side bar design
+-    [ ] channel members
+-    [ ] routing

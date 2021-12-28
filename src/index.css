@@ -8,6 +8,7 @@
 	font-family: 'Roboto', sans-serif;
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
 
 .bg-darkish {
@@ -32,17 +33,81 @@
 	height: 601px;
 }
 
+.background {
+	background-image: url('./images/bg.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+.card {
+	background: rgba(90, 58, 58, 0.5);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(4.5px);
+	-webkit-backdrop-filter: blur(4.5px);
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+#path-1 {
+	stroke-dasharray: 236;
+	stroke-dashoffset: 235;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-2 {
+	stroke-dasharray: 142;
+	stroke-dashoffset: 141;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-3 {
+	stroke-dasharray: 234;
+	stroke-dashoffset: 233;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-4 {
+	stroke-dasharray: 243;
+	stroke-dashoffset: 242;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-5 {
+	stroke-dasharray: 245;
+	stroke-dashoffset: 244;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-6 {
+	stroke-dasharray: 222;
+	stroke-dashoffset: 221;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+#path-7 {
+	stroke-dasharray: 263;
+	stroke-dashoffset: 262;
+	animation: line-anim 2s ease forwards infinite;
+}
+
+@keyframes line-anim {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
 @layer components {
 	.nav-button {
 		@apply py-2 px-4 text-white cursor-pointer hover:bg-slate-500;
 	}
 
 	.btn {
-		@apply py-2 px-4 text-white cursor-pointer rounded-md transition-all;
+		@apply py-2 px-4 text-white font-bold cursor-pointer rounded-md transition-all;
 	}
 
 	.btn-primary {
-		@apply bg-blue-600 hover:bg-blue-400;
+		@apply text-hyperlink-blue hover:bg-hyperlink-blue hover:text-white;
 	}
 
 	.btn-danger {
@@ -55,5 +120,28 @@
 
 	.chat-bubble {
 		@apply p-4 bg-blue-500  w-32 rounded-md;
+	}
+
+	.login-card {
+		@apply p-4 h-auto w-5/6 sm:w-1/2 lg:w-1/5;
+	}
+	.cover {
+		@apply flex justify-center items-center;
+	}
+
+	.input {
+		@apply w-full p-2 border-2 text-white font-semibold bg-nitro-grey focus:outline-bravery-purple focus:outline-2;
+	}
+
+	.sidebar-container {
+		@apply h-full min-h-full text-white flex flex-col font-semibold;
+	}
+
+	.label {
+		@apply block font-bold text-white;
+	}
+
+	.error {
+		@apply text-dnd-red font-bold;
 	}
 }

@@ -8,10 +8,12 @@ const UsersContextProvider = (props) => {
 	const { state } = useAuth();
 	useEffect(() => {
 		(async () => {
-			const data = await getUsers(state.headers);
-			setUsers(data);
+			if (state.login) {
+				const data = await getUsers(state.headers);
+				setUsers(data);
+			}
 		})();
-	}, [state.headers]);
+	}, [state.login, state.headers]);
 	return (
 		<UsersContext.Provider value={users}>
 			{props.children}

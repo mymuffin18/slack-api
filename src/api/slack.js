@@ -162,3 +162,15 @@ export const sendMessage = async (headers, id, receiverClass, body) => {
 		console.error(error.response);
 	}
 };
+
+export const fetcher = (url, headers) =>
+	axios
+		.get(url, {
+			headers: {
+				...headers,
+			},
+		})
+		.then((res) => {
+			console.log(res.data.data);
+			return res.data.data;
+		});

@@ -1,10 +1,15 @@
+import { getByDisplayValue } from '@testing-library/react';
+import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
 import {
+	fetcher,
 	getChannelDetail,
 	getChannelMessages,
 	sendMessage,
 } from '../api/slack';
+import { API_URL } from '../api/url';
 import { useAuth } from '../context/AuthContextProvider';
 import { useUsers } from '../context/UsersContextProvider';
 import AddMemberModal from './AddMemberModal';
@@ -19,9 +24,10 @@ const Channel = () => {
 		useState(false);
 	const users = useUsers();
 	const [message, setMessage] = useState('');
-	const [messages, setMessages] = useState([]);
+
 	const spanRef = useRef();
 	const inputRef = useRef();
+
 	useEffect(() => {
 		(async () => {
 			const data = await getChannelDetail(state.headers, params.id);
@@ -29,15 +35,32 @@ const Channel = () => {
 		})();
 		inputRef.current.focus();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params.id]);
+	}, [params.id, state.headers]);
+
+	const { data: messages, error } = useSWR(
+		[
+			`${API_URL}/messages?receiver_id=${params.id}&receiver_class=Channel`,
+			state.headers,
+		],
+		fetcher,
+		{ refreshInterval: 1000 }
+	);
 
 	useEffect(() => {
-		(async () => {
-			const msgs = await getChannelMessages(state.headers, params.id);
-			setMessages(msgs);
-			spanRef.current.scrollIntoView({ behavior: 'smooth' });
-		})();
-	}, [params.id]);
+		if (messages) {
+			spanRef.current.scrollIntoView({
+				// behavior: 'smooth',
+			});
+		}
+	}, [messages]);
+
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const msgs = await getChannelMessages(state.headers, params.id);
+	// 		setMessages(msgs);
+	// 		spanRef.current.scrollIntoView({ behavior: 'smooth' });
+	// 	})();
+	// }, [params.id]);
 
 	const toggleAddMember = () => {
 		// toggles Add member modal
@@ -48,6 +71,16 @@ const Channel = () => {
 		// toggles Member modal
 		setToggleChannelMemberModal((t) => !t);
 	};
+
+	// const getDay = (date) => {
+	// 	const d = new Date(date);
+	// 	const today = new Date();
+	// 	if (d.getDate() === today.getDate()) {
+	// 		return <span>today</span>;
+	// 	} else {
+	// 		return <span>{d.toDateString()}</span>;
+	// 	}
+	// };
 
 	const getMembers = () => {
 		let arr = [];
@@ -101,30 +134,41 @@ const Channel = () => {
 				</div>
 				<div className='bg-blue-300 chat-box overflow-y-auto'>
 					<div className='flex flex-col gap-3 px-2'>
-						{messages.map((msg, index) => (
-							<div
-								key={msg.id}
-								className={`${
-									msg.sender.id === state.user.id
-										? 'self-end'
-										: 'self-start'
-								}`}
-							>
-								<span className='text-sm'>
-									{msg.sender.email}
-								</span>
+						{messages &&
+							messages.map((msg, index) => (
 								<div
-									className='flex chat-bubble'
-									ref={
-										messages.length - 1 === index
-											? spanRef
-											: null
-									}
+									key={msg.id}
+									className={`${
+										msg.sender.id ===
+										state.user.id
+											? 'self-end'
+											: 'self-start'
+									}`}
 								>
-									{msg.body}
+									{/* {getDay(msg.created_at)} */}
+									<span className='text-sm'>
+										{msg.sender.email ===
+										state.user.email ? (
+											<span>You</span>
+										) : (
+											<span>
+												{msg.sender.email}
+											</span>
+										)}
+									</span>
+									<div
+										className='flex chat-bubble'
+										ref={
+											messages.length - 1 ===
+											index
+												? spanRef
+												: null
+										}
+									>
+										{msg.body}
+									</div>
 								</div>
-							</div>
-						))}
+							))}
 						<span ref={spanRef}></span>
 					</div>
 				</div>
