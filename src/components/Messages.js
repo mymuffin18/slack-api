@@ -60,6 +60,20 @@ const Messages = () => {
 			setMessage('');
 		}
 	};
+
+	const getDay = (date) => {
+		const d = new Date(date);
+		const today = new Date();
+		if (d.getDate() === today.getDate()) {
+			return <span className='text-sm font-bold'>today</span>;
+		} else {
+			return (
+				<span className='text-sm font-bold'>
+					{d.toDateString()}
+				</span>
+			);
+		}
+	};
 	return (
 		<>
 			<div className='card h-full flex flex-col'>
@@ -83,16 +97,22 @@ const Messages = () => {
 											: 'self-start'
 									}`}
 								>
-									<span className='text-sm'>
-										{msg.sender.email ===
-										state.user.email ? (
-											<span>You</span>
-										) : (
-											<span>
-												{msg.sender.email}
-											</span>
-										)}
-									</span>
+									<div className='flex justify-around gap-2 items-center text-white'>
+										{getDay(msg.created_at)}
+										<span className='text-sm'>
+											{msg.sender.email ===
+											state.user.email ? (
+												<span>You</span>
+											) : (
+												<span>
+													{
+														msg.sender
+															.email
+													}
+												</span>
+											)}
+										</span>
+									</div>
 									<div className='flex chat-bubble'>
 										{msg.body}
 									</div>

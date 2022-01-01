@@ -67,15 +67,19 @@ const Channel = () => {
 		setToggleChannelMemberModal((t) => !t);
 	};
 
-	// const getDay = (date) => {
-	// 	const d = new Date(date);
-	// 	const today = new Date();
-	// 	if (d.getDate() === today.getDate()) {
-	// 		return <span>today</span>;
-	// 	} else {
-	// 		return <span>{d.toDateString()}</span>;
-	// 	}
-	// };
+	const getDay = (date) => {
+		const d = new Date(date);
+		const today = new Date();
+		if (d.getDate() === today.getDate()) {
+			return <span className='text-sm font-bold'>today</span>;
+		} else {
+			return (
+				<span className='text-sm font-bold'>
+					{d.toDateString()}
+				</span>
+			);
+		}
+	};
 
 	const getMembers = () => {
 		let arr = [];
@@ -142,17 +146,22 @@ const Channel = () => {
 											: 'self-start'
 									}`}
 								>
-									{/* {getDay(msg.created_at)} */}
-									<span className='text-sm'>
-										{msg.sender.email ===
-										state.user.email ? (
-											<span>You</span>
-										) : (
-											<span>
-												{msg.sender.email}
-											</span>
-										)}
-									</span>
+									<div className='flex justify-around gap-2 items-center text-white'>
+										{getDay(msg.created_at)}
+										<span className='text-sm'>
+											{msg.sender.email ===
+											state.user.email ? (
+												<span>You</span>
+											) : (
+												<span>
+													{
+														msg.sender
+															.email
+													}
+												</span>
+											)}
+										</span>
+									</div>
 									<div
 										className='flex chat-bubble'
 										// 	ref={
