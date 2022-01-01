@@ -1,5 +1,11 @@
 import LoginForm from './components/LoginForm';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+	BrowserRouter,
+	Routes,
+	Route,
+	Navigate,
+	useNavigate,
+} from 'react-router-dom';
 import { useAuth } from './context/AuthContextProvider';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import Dashboard from './components/Dashboard';
@@ -14,11 +20,13 @@ import CreateChannel from './components/CreateChannel';
 function App() {
 	const { state } = useAuth();
 	let redirectRoute;
+
 	if (state.login) {
 		redirectRoute = <Navigate replace to='dashboard' />;
 	} else {
 		redirectRoute = <LoginForm />;
 	}
+
 	return (
 		<>
 			<ChannelContextProvider>
@@ -53,7 +61,16 @@ function App() {
 							</Route>
 							<Route
 								path='register'
-								element={<Register />}
+								element={
+									state.login ? (
+										<Navigate
+											replace={false}
+											to='/dashboard'
+										/>
+									) : (
+										<Register />
+									)
+								}
 							/>
 						</Routes>
 					</BrowserRouter>
