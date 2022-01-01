@@ -63,7 +63,7 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 
 	return ReactDOM.createPortal(
 		<div className='modal-bg bg-darkish'>
-			<div className='modal gap-2'>
+			<div className='card modal modal-size gap-2'>
 				<div className='mt-5'>
 					<h1 className='text-center'>Add Member</h1>
 				</div>

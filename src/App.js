@@ -9,6 +9,7 @@ import Channel from './components/Channel';
 import UsersContextProvider from './context/UsersContextProvider';
 import DirectMessage from './components/DirectMessage';
 import Messages from './components/Messages';
+import CreateChannel from './components/CreateChannel';
 
 function App() {
 	const { state } = useAuth();
@@ -33,6 +34,10 @@ function App() {
 									</ProtectedRoutes>
 								}
 							>
+								<Route
+									path=''
+									element={<CreateChannel />}
+								/>
 								<Route
 									path='channels/:id'
 									element={<Channel />}

@@ -7,7 +7,9 @@ import AuthContextProvider from './context/AuthContextProvider';
 
 ReactDOM.render(
 	<AuthContextProvider>
-		<App />
+		<div className='screen m-0 background'>
+			<App />
+		</div>
 	</AuthContextProvider>,
 	document.getElementById('root')
 );

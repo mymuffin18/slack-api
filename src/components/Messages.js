@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
-import { fetcher, sendMessage } from '../api/slack';
+import { fetcher, getUser, sendMessage } from '../api/slack';
 import { API_URL } from '../api/url';
 import { useAuth } from '../context/AuthContextProvider';
 import { useUsers } from '../context/UsersContextProvider';
-
+import _ from 'lodash';
 const Messages = () => {
 	const params = useParams();
 	const { state } = useAuth();
-
+	const [user, setUser] = useState({});
 	const users = useUsers();
 	const [message, setMessage] = useState('');
-
 	const spanRef = useRef();
 	const inputRef = useRef();
 
@@ -35,20 +34,22 @@ const Messages = () => {
 	);
 
 	useEffect(() => {
-		if (messages) {
+		let mounted = true;
+		if (mounted) {
 			spanRef.current.scrollIntoView({
 				// behavior: 'smooth',
 			});
 		}
+
+		return () => (mounted = false);
 	}, [messages]);
 
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const msgs = await getChannelMessages(state.headers, params.id);
-	// 		setMessages(msgs);
-	// 		spanRef.current.scrollIntoView({ behavior: 'smooth' });
-	// 	})();
-	// }, [params.id]);
+	useEffect(() => {
+		(async () => {
+			const u = await getUser(users, params.id);
+			setUser(u);
+		})();
+	}, [params.id, users]);
 
 	const handleSend = async (e) => {
 		e.preventDefault();
@@ -61,9 +62,15 @@ const Messages = () => {
 	};
 	return (
 		<>
-			<div className='h-full flex flex-col'>
-				<div className='bg-red-300 h-16 flex justify-around items-center'></div>
-				<div className='bg-blue-300 chat-box overflow-y-auto'>
+			<div className='card h-full flex flex-col'>
+				<div className=' h-16 flex justify-around items-center'>
+					{!_.isEmpty(user) && (
+						<span className='text-lg text-white font-bold'>
+							{user.email}
+						</span>
+					)}
+				</div>
+				<div className=' chat-box overflow-y-auto'>
 					<div className='flex flex-col gap-3 px-2'>
 						{messages &&
 							messages.map((msg, index) => (
@@ -86,15 +93,7 @@ const Messages = () => {
 											</span>
 										)}
 									</span>
-									<div
-										className='flex chat-bubble'
-										ref={
-											messages.length - 1 ===
-											index
-												? spanRef
-												: null
-										}
-									>
+									<div className='flex chat-bubble'>
 										{msg.body}
 									</div>
 								</div>
@@ -103,7 +102,7 @@ const Messages = () => {
 					</div>
 				</div>
 				<form onSubmit={(e) => handleSend(e)}>
-					<div className='bg-red-300 h-20 flex items-center justify-center gap-3'>
+					<div className='h-20 flex items-center justify-center gap-3'>
 						<textarea
 							name=''
 							className='resize-none w-5/6 rounded-lg'

@@ -40,6 +40,10 @@ export const getChannelMessages = async (headers, id) => {
 	return data;
 };
 
+export const getUser = async (users, id) => {
+	let user = users.find((user) => user.id === parseInt(id));
+	return user;
+};
 export const getChannelDetail = async (headers, id) => {
 	let data = {};
 	try {

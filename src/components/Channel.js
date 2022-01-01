@@ -25,7 +25,7 @@ const Channel = () => {
 	const users = useUsers();
 	const [message, setMessage] = useState('');
 
-	const spanRef = useRef();
+	let spanRef = useRef();
 	const inputRef = useRef();
 
 	useEffect(() => {
@@ -37,7 +37,7 @@ const Channel = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params.id, state.headers]);
 
-	const { data: messages, error } = useSWR(
+	let { data: messages, error } = useSWR(
 		[
 			`${API_URL}/messages?receiver_id=${params.id}&receiver_class=Channel`,
 			state.headers,
@@ -47,20 +47,15 @@ const Channel = () => {
 	);
 
 	useEffect(() => {
-		if (messages) {
+		let mounted = true;
+		if (mounted) {
 			spanRef.current.scrollIntoView({
 				// behavior: 'smooth',
 			});
 		}
-	}, [messages]);
 
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const msgs = await getChannelMessages(state.headers, params.id);
-	// 		setMessages(msgs);
-	// 		spanRef.current.scrollIntoView({ behavior: 'smooth' });
-	// 	})();
-	// }, [params.id]);
+		return () => (mounted = false);
+	}, [messages]);
 
 	const toggleAddMember = () => {
 		// toggles Add member modal
@@ -112,8 +107,8 @@ const Channel = () => {
 	};
 	return (
 		<>
-			<div className='h-full flex flex-col'>
-				<div className='bg-red-300 h-16 flex justify-around items-center'>
+			<div className='card h-full flex flex-col'>
+				<div className='h-16 flex justify-around items-center'>
 					<div>
 						<button
 							className='btn btn-primary'
@@ -122,7 +117,9 @@ const Channel = () => {
 							Members
 						</button>
 					</div>
-					<div>{channelData.name}</div>
+					<div className='text-white font-bold text-lg'>
+						{channelData.name}
+					</div>
 					<div>
 						<button
 							className='btn btn-primary'
@@ -132,7 +129,7 @@ const Channel = () => {
 						</button>
 					</div>
 				</div>
-				<div className='bg-blue-300 chat-box overflow-y-auto'>
+				<div className='chat-box overflow-y-auto'>
 					<div className='flex flex-col gap-3 px-2'>
 						{messages &&
 							messages.map((msg, index) => (
@@ -158,12 +155,12 @@ const Channel = () => {
 									</span>
 									<div
 										className='flex chat-bubble'
-										ref={
-											messages.length - 1 ===
-											index
-												? spanRef
-												: null
-										}
+										// 	ref={
+										// 		// messages.length - 1 ===
+										// 		// index
+										// 		// 	? spanRef
+										// 		// 	: null
+										// 	}
 									>
 										{msg.body}
 									</div>
@@ -173,7 +170,7 @@ const Channel = () => {
 					</div>
 				</div>
 				<form onSubmit={(e) => handleSend(e)}>
-					<div className='bg-red-300 h-20 flex items-center justify-center gap-3'>
+					<div className='h-20 flex items-center justify-center gap-3'>
 						<textarea
 							name=''
 							className='resize-none w-5/6 rounded-lg'
