@@ -16,7 +16,7 @@ const Sidebar = () => {
 	const [search, setSearch] = useState('');
 	const [filteredNames, setFilteredNames] = useState([]);
 
-	const { dispatch } = useAuth();
+	const { state, dispatch } = useAuth();
 	const logoutHandler = (e) => {
 		e.preventDefault();
 		dispatch({ type: 'LOGOUT' });
@@ -175,6 +175,9 @@ const Sidebar = () => {
 							</filter>
 						</defs>
 					</svg>
+				</div>
+				<div>
+					<span className='text-lg'>{state.user.email}</span>
 				</div>
 				<div className='w-full'>
 					<hr className='border-gray-100' />
