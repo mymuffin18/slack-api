@@ -123,7 +123,7 @@ const Channel = () => {
 	return (
 		<>
 			<div className='card h-full flex flex-col'>
-				<div className='h-16 flex justify-around items-center'>
+				<div className='h-16 flex justify-between items-center'>
 					<div>
 						<button
 							className='btn btn-primary'
@@ -151,7 +151,7 @@ const Channel = () => {
 						<GiHamburgerMenu size={32} />
 					</div>
 				</div>
-				<div className='chat-box overflow-y-auto'>
+				<div className='chat-box overflow-y-auto overflow-x-hidden'>
 					<div className='flex flex-col gap-3 px-4'>
 						{messages &&
 							messages.map((msg, index) => (
@@ -196,7 +196,7 @@ const Channel = () => {
 										</div>
 									</div>
 
-									<div className=' chat-bubble word-break text-white'>
+									<div className='chat-bubble word-break text-white overflow-x-auto'>
 										<div className='mr-3'>
 											<ReactMarkdown
 												remarkPlugins={[
@@ -212,59 +212,59 @@ const Channel = () => {
 						<span ref={spanRef}></span>
 					</div>
 				</div>
-				<form
-					onSubmit={(e) => handleSend(e)}
-					className='flex w-full'
-				>
-					<div className='h-full flex items-center justify-center gap-3 px-3 w-full'>
-						<div className='w-full'>
-							<MDEditor
-								value={message}
-								onChange={setMessage}
-								preview='edit'
-								fullscreen={false}
-								commands={[
-									commands.bold,
-									commands.codeBlock,
-									commands.italic,
-									commands.strikethrough,
-									commands.hr,
-									commands.code,
-									commands.unorderedListCommand,
-									commands.orderedListCommand,
-									commands.checkedListCommand,
-									commands.image,
-									commands.group(
-										[
-											commands.title1,
-											commands.title2,
-											commands.title3,
-											commands.title4,
-											commands.title5,
-											commands.title6,
-										],
-										{
-											name: 'title',
-											groupName: 'title',
-											buttonProps: {
-												'aria-label':
-													'Insert title',
-											},
-										}
-									),
-								]}
-							/>
+				<div className=''>
+					<form onSubmit={(e) => handleSend(e)}>
+						<div className='h-full flex items-center justify-center gap-3 px-3 w-full'>
+							<div className='w-full'>
+								<MDEditor
+									value={message}
+									onChange={setMessage}
+									preview='edit'
+									fullscreen={false}
+									height={100}
+									commands={[
+										commands.bold,
+										commands.codeBlock,
+										commands.italic,
+										commands.strikethrough,
+										commands.hr,
+										commands.code,
+										commands.unorderedListCommand,
+										commands.orderedListCommand,
+										commands.checkedListCommand,
+										commands.image,
+										commands.group(
+											[
+												commands.title1,
+												commands.title2,
+												commands.title3,
+												commands.title4,
+												commands.title5,
+												commands.title6,
+											],
+											{
+												name: 'title',
+												groupName: 'title',
+												buttonProps: {
+													'aria-label':
+														'Insert title',
+												},
+											}
+										),
+									]}
+								/>
+							</div>
+							<div>
+								<button
+									className='btn btn-primary'
+									type='submit'
+								>
+									Send
+								</button>
+							</div>
 						</div>
-						<div>
-							<button
-								className='btn btn-primary'
-								type='submit'
-							>
-								Send
-							</button>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
 
 			{toggleAddMemberModal && (

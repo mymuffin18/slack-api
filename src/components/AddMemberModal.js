@@ -100,37 +100,41 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 						</svg>
 					</div>
 					{toggleUserList && (
-						<ul className='bg-white border border-gray-100 mt-2 w-full overflow-y-auto overflow-x-hidden flex flex-col items-center h-40'>
-							{filteredEmails &&
-								filteredEmails.map((user) => (
-									<li
-										key={user.id}
-										className='py-1 text-black border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'
-										onClick={() =>
-											handleAdd(user)
-										}
-									>
-										{user.email}
-									</li>
-								))}
-						</ul>
+						<div>
+							<ul className='bg-white border border-gray-100 mt-2 w-full overflow-y-auto overflow-x-hidden flex flex-col items-center h-40 list-none'>
+								{filteredEmails &&
+									filteredEmails.map((user) => (
+										<li
+											key={user.id}
+											className='py-1 text-black border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'
+											onClick={() =>
+												handleAdd(user)
+											}
+										>
+											{user.email}
+										</li>
+									))}
+							</ul>
+						</div>
 					)}
 				</div>
-				{!_.isEmpty(user) && (
-					<div className='w-full flex justify-around items-center'>
-						<div className='text-lg'>{user.email}</div>
+				<div className='w-full h-full'>
+					{!_.isEmpty(user) && (
+						<div className=' flex justify-center gap-5 items-center'>
+							<div className='text-lg'>{user.email}</div>
 
-						<div
-							style={{ color: 'red' }}
-							className='cursor-pointer'
-							onClick={handleRemoveUser}
-						>
-							<BsFillXCircleFill />
+							<div
+								style={{ color: 'red' }}
+								className='cursor-pointer'
+								onClick={handleRemoveUser}
+							>
+								<BsFillXCircleFill />
+							</div>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 
-				<div className='flex justify-around gap-2'>
+				<div className='flex justify-around items-center gap-2 h-28'>
 					<button
 						className='btn btn-danger'
 						onClick={closeModal}

@@ -55,7 +55,7 @@ html {
 
 /* quick fix might change later */
 .chat-box {
-	height: 440px;
+	height: 550px;
 }
 
 .screen {
@@ -67,7 +67,7 @@ html {
 .background {
 	background-image: url('https://wallpapercave.com/wp/wp5513644.png');
 	background-repeat: no-repeat;
-	background-size: auto;
+	background-size: cover;
 	background-attachment: fixed;
 	background-position: center;
 }
@@ -238,10 +238,10 @@ html {
 	}
 
 	ul {
-		@apply list-disc;
+		@apply list-disc ml-2;
 	}
 
 	ol {
-		@apply list-decimal;
+		@apply list-decimal ml-2;
 	}
 }
