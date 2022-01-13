@@ -6,6 +6,10 @@ import { API_URL } from '../api/url';
 import { useAuth } from '../context/AuthContextProvider';
 import { useUsers } from '../context/UsersContextProvider';
 import _ from 'lodash';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { useNav } from '../context/NavContextProvider';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 const Messages = () => {
 	const params = useParams();
 	const { state } = useAuth();
@@ -14,6 +18,7 @@ const Messages = () => {
 	const [message, setMessage] = useState('');
 	const spanRef = useRef();
 	const inputRef = useRef();
+	const { handleOpenNav } = useNav();
 
 	// useEffect(() => {
 	// 	(async () => {
@@ -65,11 +70,17 @@ const Messages = () => {
 		const d = new Date(date);
 		const today = new Date();
 		if (d.getDate() === today.getDate()) {
-			return <span className='text-sm font-bold'>today</span>;
+			return (
+				<span className='text-sm font-extralight text-bravery-purple'>
+					today
+				</span>
+			);
 		} else {
 			return (
-				<span className='text-sm font-bold'>
-					{d.toDateString()}
+				<span className='text-sm font-extralight text-bravery-purple'>
+					{`${
+						d.getUTCMonth() + 1
+					}/${d.getUTCDate()}/${d.getFullYear()}`}
 				</span>
 			);
 		}
@@ -84,22 +95,35 @@ const Messages = () => {
 						</span>
 					)}
 				</div>
+				<div
+					style={{ color: 'white' }}
+					className='absolute top-3 right-3 cursor-pointer lg:hidden'
+					onClick={handleOpenNav}
+				>
+					<GiHamburgerMenu size={32} />
+				</div>
 				<div className=' chat-box overflow-y-auto'>
-					<div className='flex flex-col gap-3 px-2'>
+					<div className='flex flex-col gap-3 px-4'>
 						{messages &&
 							messages.map((msg, index) => (
 								<div
 									key={msg.id}
-									className={`${
-										msg.sender.id ===
-										state.user.id
-											? 'self-end'
-											: 'self-start'
-									}`}
+									// className={`${
+									// 	msg.sender.id ===
+									// 	state.user.id
+									// 		? 'self-end'
+									// 		: 'self-start'
+									// }`}
 								>
-									<div className='flex justify-around gap-2 items-center text-white'>
-										{getDay(msg.created_at)}
-										<span className='text-sm'>
+									<div className='flex gap-2 items-end text-white'>
+										<div className='h-10'>
+											<img
+												src='https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'
+												alt=''
+												className='h-full rounded-full'
+											/>
+										</div>
+										<span className='text-lg text-brilliance-coral'>
 											{msg.sender.email ===
 											state.user.email ? (
 												<span>You</span>
@@ -112,20 +136,27 @@ const Messages = () => {
 												</span>
 											)}
 										</span>
+										{getDay(msg.created_at)}
 									</div>
-									<div className='flex chat-bubble'>
-										{msg.body}
-									</div>
+									<p className='chat-bubble word-break text-white'>
+										<ReactMarkdown
+											remarkPlugins={[
+												remarkGfm,
+											]}
+										>
+											{msg.body}
+										</ReactMarkdown>
+									</p>
 								</div>
 							))}
 						<span ref={spanRef}></span>
 					</div>
 				</div>
 				<form onSubmit={(e) => handleSend(e)}>
-					<div className='h-20 flex items-center justify-center gap-3'>
+					<div className='h-20 flex items-center justify-center gap-3 px-3'>
 						<textarea
 							name=''
-							className='resize-none w-5/6 rounded-lg'
+							className='resize-none w-5/6 rounded-lg p-2'
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
 							ref={inputRef}

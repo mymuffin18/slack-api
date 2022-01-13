@@ -1,7 +1,9 @@
-import { getByDisplayValue } from '@testing-library/react';
-import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { useParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import ReactMde from 'react-mde';
 import useSWR from 'swr';
 import {
 	fetcher,
@@ -11,6 +13,7 @@ import {
 } from '../api/slack';
 import { API_URL } from '../api/url';
 import { useAuth } from '../context/AuthContextProvider';
+import { useNav } from '../context/NavContextProvider';
 import { useUsers } from '../context/UsersContextProvider';
 import AddMemberModal from './AddMemberModal';
 import ChannelMemberModal from './ChannelMemberModal';
@@ -24,7 +27,7 @@ const Channel = () => {
 		useState(false);
 	const users = useUsers();
 	const [message, setMessage] = useState('');
-
+	const { handleOpenNav } = useNav();
 	let spanRef = useRef();
 	const inputRef = useRef();
 
@@ -71,11 +74,17 @@ const Channel = () => {
 		const d = new Date(date);
 		const today = new Date();
 		if (d.getDate() === today.getDate()) {
-			return <span className='text-sm font-bold'>today</span>;
+			return (
+				<span className='text-sm font-extralight text-bravery-purple'>
+					today
+				</span>
+			);
 		} else {
 			return (
-				<span className='text-sm font-bold'>
-					{d.toDateString()}
+				<span className='text-sm font-extralight text-bravery-purple'>
+					{`${
+						d.getUTCMonth() + 1
+					}/${d.getUTCDate()}/${d.getFullYear()}`}
 				</span>
 			);
 		}
@@ -129,49 +138,72 @@ const Channel = () => {
 							className='btn btn-primary'
 							onClick={toggleAddMember}
 						>
-							add member
+							Add member
 						</button>
+					</div>
+					<div
+						style={{ color: 'white' }}
+						className='cursor-pointer lg:hidden'
+						onClick={handleOpenNav}
+					>
+						<GiHamburgerMenu size={32} />
 					</div>
 				</div>
 				<div className='chat-box overflow-y-auto'>
-					<div className='flex flex-col gap-3 px-2'>
+					<div className='flex flex-col gap-3 px-4'>
 						{messages &&
 							messages.map((msg, index) => (
 								<div
 									key={msg.id}
-									className={`${
-										msg.sender.id ===
-										state.user.id
-											? 'self-end'
-											: 'self-start'
-									}`}
+									// className={`${
+									// 	msg.sender.id ===
+									// 	state.user.id
+									// 		? 'self-end'
+									// 		: 'self-start'
+									// }`}
 								>
-									<div className='flex justify-around gap-2 items-center text-white'>
-										{getDay(msg.created_at)}
-										<span className='text-sm'>
-											{msg.sender.email ===
-											state.user.email ? (
-												<span>You</span>
-											) : (
-												<span>
-													{
-														msg.sender
-															.email
-													}
-												</span>
-											)}
-										</span>
+									<div className='flex gap-2 items-end text-white'>
+										<div className='h-10'>
+											<img
+												src='https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg'
+												alt=''
+												className='h-full rounded-full'
+											/>
+										</div>
+										<div>
+											<span className='text-lg text-brilliance-coral'>
+												{msg.sender
+													.email ===
+												state.user.email ? (
+													<span>
+														You
+													</span>
+												) : (
+													<span>
+														{
+															msg
+																.sender
+																.email
+														}
+													</span>
+												)}
+											</span>
+										</div>
+										<div>
+											{getDay(msg.created_at)}
+										</div>
 									</div>
-									<div
-										className='flex chat-bubble'
-										// 	ref={
-										// 		// messages.length - 1 ===
-										// 		// index
-										// 		// 	? spanRef
-										// 		// 	: null
-										// 	}
-									>
-										{msg.body}
+
+									<div className=' chat-bubble word-break text-white'>
+										<div className='mr-3'>
+											<ReactMarkdown
+												remarkPlugins={[
+													remarkGfm,
+												]}
+											>
+												{msg.body}
+											</ReactMarkdown>
+										</div>
 									</div>
 								</div>
 							))}
@@ -179,10 +211,10 @@ const Channel = () => {
 					</div>
 				</div>
 				<form onSubmit={(e) => handleSend(e)}>
-					<div className='h-20 flex items-center justify-center gap-3'>
+					<div className='h-20 flex items-center justify-center gap-3 px-3'>
 						<textarea
 							name=''
-							className='resize-none w-5/6 rounded-lg'
+							className='resize-none w-5/6 rounded-lg p-2'
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
 							ref={inputRef}

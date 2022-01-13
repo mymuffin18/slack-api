@@ -4,7 +4,7 @@ import { useUsers } from '../context/UsersContextProvider';
 import _ from 'lodash';
 import { addMemberChannel } from '../api/slack';
 import { useAuth } from '../context/AuthContextProvider';
-
+import { BsFillXCircleFill } from 'react-icons/bs';
 const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 	const users = useUsers();
 	const [toggleUserList, setToggleUserList] = useState(false);
@@ -15,6 +15,10 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 
 	const handleFocus = () => {
 		setToggleUserList((t) => !t);
+	};
+
+	const handleBlur = () => {
+		setToggleUserList(false);
 	};
 
 	const handleAdd = (u) => {
@@ -63,7 +67,7 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 
 	return ReactDOM.createPortal(
 		<div className='modal-bg bg-darkish'>
-			<div className='card modal modal-size gap-2'>
+			<div className='card-modal modal modal-size gap-2'>
 				<div className='mt-5'>
 					<h1 className='text-center'>Add Member</h1>
 				</div>
@@ -74,6 +78,7 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 							className='p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent'
 							placeholder='Search User...'
 							onFocus={handleFocus}
+							// onBlur={handleBlur}
 							value={search}
 							onChange={(e) =>
 								setSearch((s) => e.target.value)
@@ -95,12 +100,12 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 						</svg>
 					</div>
 					{toggleUserList && (
-						<ul className='bg-white border border-gray-100 mt-2 w-full overflow-y-auto overflow-x-hidden flex flex-col items-center'>
+						<ul className='bg-white border border-gray-100 mt-2 w-full overflow-y-auto overflow-x-hidden flex flex-col items-center h-40'>
 							{filteredEmails &&
 								filteredEmails.map((user) => (
 									<li
 										key={user.id}
-										className='py-1 border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'
+										className='py-1 text-black border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900'
 										onClick={() =>
 											handleAdd(user)
 										}
@@ -114,13 +119,13 @@ const AddMemberModal = ({ setToggleAddMemberModal, channelId }) => {
 				{!_.isEmpty(user) && (
 					<div className='w-full flex justify-around items-center'>
 						<div className='text-lg'>{user.email}</div>
-						<div>
-							<button
-								className='btn btn-danger'
-								onClick={handleRemoveUser}
-							>
-								Remove
-							</button>
+
+						<div
+							style={{ color: 'red' }}
+							className='cursor-pointer'
+							onClick={handleRemoveUser}
+						>
+							<BsFillXCircleFill />
 						</div>
 					</div>
 				)}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
-import { Link, NavLink } from 'react-router-dom';
 
 import { useAuth } from '../context/AuthContextProvider';
 
@@ -37,8 +36,8 @@ const Sidebar = () => {
 	}, [search, users]);
 
 	return (
-		<div className='card sidebar-container min-h-full overflow-hidden'>
-			<div className='p-3 flex flex-col gap-2 items-center min-h-full overflow-y-auto'>
+		<div className='card sidebar-container h-full overflow-hidden'>
+			<div className='p-3 flex flex-col gap-2 items-center overflow-y-auto sidebar-container-div'>
 				<div>
 					<svg
 						id='logo'
@@ -231,13 +230,13 @@ const Sidebar = () => {
 					<div
 						className={`${
 							msgToggle ? 'rotate-90' : ''
-						} transition-all`}
+						} transition-transform p-2 hover:bg-slate-500`}
 					>
 						<FaAngleRight />
 					</div>
 				</div>
 				{msgToggle && (
-					<ul className='dropdown-list h-40'>
+					<ul className='dropdown-list h-60'>
 						<input
 							type='text'
 							value={search}
@@ -262,14 +261,14 @@ const Sidebar = () => {
 				{/* <div className='flex flex-col'>
 					<Link to='/dashboard/messages/'>Send Message</Link>
 				</div> */}
-				<div className='flex flex-col justify-end w-full'>
-					<button
-						className='btn btn-danger'
-						onClick={(e) => logoutHandler(e)}
-					>
-						Logout
-					</button>
-				</div>
+			</div>
+			<div className='flex flex-col justify-end w-full p-2'>
+				<button
+					className='btn btn-danger'
+					onClick={(e) => logoutHandler(e)}
+				>
+					Logout
+				</button>
 			</div>
 		</div>
 	);

@@ -65,18 +65,27 @@ html {
 	height: 100vmin;
 }
 .background {
-	background-image: url('./images/bg.png');
+	background-image: url('https://wallpapercave.com/wp/wp5513644.png');
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: auto;
 	background-attachment: fixed;
 	background-position: center;
 }
 
 .card {
-	background: rgba(90, 58, 58, 0.5);
+	background: rgba(255, 255, 255, 0.15);
 	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	backdrop-filter: blur(4.5px);
-	-webkit-backdrop-filter: blur(4.5px);
+	backdrop-filter: blur(0.5px);
+	-webkit-backdrop-filter: blur(0.5px);
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.card-modal {
+	background: rgba(255, 255, 255, 0.35);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(11.5px);
+	-webkit-backdrop-filter: blur(11.5px);
 	border-radius: 10px;
 	border: 1px solid rgba(255, 255, 255, 0.18);
 }
@@ -133,6 +142,15 @@ html {
 	min-height: 50px;
 }
 
+.word-break {
+	word-break: break-word;
+}
+
+.sidebar-container-div {
+	max-height: 600px;
+	overflow: hidden;
+}
+
 @layer components {
 	.nav-button {
 		@apply py-2 px-4 text-white cursor-pointer hover:bg-slate-500;
@@ -146,8 +164,12 @@ html {
 		@apply text-hyperlink-blue hover:bg-hyperlink-blue hover:text-white;
 	}
 
+	.btn-logout {
+		@apply bg-dnd-red hover:bg-red-400;
+	}
+
 	.btn-danger {
-		@apply bg-red-600 hover:bg-red-400;
+		@apply text-dnd-red hover:bg-dnd-red hover:text-white;
 	}
 
 	.modal-bg {
@@ -155,7 +177,7 @@ html {
 	}
 
 	.chat-bubble {
-		@apply p-4 bg-blue-500  w-32 rounded-md;
+		@apply p-4 hover:bg-dark-grey;
 	}
 
 	.login-card {
@@ -170,7 +192,7 @@ html {
 	}
 
 	.sidebar-container {
-		@apply h-full text-white flex flex-col font-semibold;
+		@apply h-full text-white flex flex-col font-semibold justify-between;
 	}
 
 	.label {
@@ -198,5 +220,28 @@ html {
 
 	.modal-size {
 		@apply h-1/2 w-3/4 lg:w-2/6;
+	}
+}
+@layer base {
+	h1 {
+		@apply text-2xl font-bold;
+	}
+	h2 {
+		@apply text-xl font-semibold;
+	}
+	a {
+		@apply font-thin text-not-so-blurple hover:underline;
+	}
+
+	blockquote {
+		@apply p-4 italic border-l-4 bg-neutral-100 text-neutral-600 border-neutral-500;
+	}
+
+	ul {
+		@apply list-disc;
+	}
+
+	ol {
+		@apply list-decimal;
 	}
 }

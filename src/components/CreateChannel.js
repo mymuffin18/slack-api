@@ -3,6 +3,9 @@ import { createChannel, getUsers } from '../api/slack';
 import { useAuth } from '../context/AuthContextProvider';
 import { useChannels } from '../context/ChannelContextProvider';
 import { FaPlusSquare } from 'react-icons/fa';
+import { BsFillXCircleFill } from 'react-icons/bs';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { useNav } from '../context/NavContextProvider';
 
 const CreateChannel = (props) => {
 	const [channelName, setChannelName] = useState('');
@@ -11,7 +14,7 @@ const CreateChannel = (props) => {
 	const [toggleUserList, setToggleUserList] = useState(false);
 	const [filteredEmails, setFilteredEmails] = useState([]);
 	const [search, setSearch] = useState('');
-
+	const { dispatch: navDispatch } = useNav();
 	const [users, setUsers] = useState([]);
 	const { state } = useAuth();
 	const { dispatch: channelDispatch } = useChannels();
@@ -47,15 +50,29 @@ const CreateChannel = (props) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const [data, status] = await createChannel(
+		const [data, errors] = await createChannel(
 			users,
 			channelName,
 			state.headers
 		);
-		if (status === 200) {
+		if (errors.length === 0) {
 			alert('You created a new channel!');
 			channelDispatch({ type: 'ADD_CHANNEL', payload: data });
+		} else {
+			alert(errors[0]);
 		}
+	};
+
+	const handleFocus = () => {
+		setToggleUserList((t) => !t);
+	};
+
+	const handleBlur = () => {
+		setToggleUserList(false);
+	};
+
+	const handleOpenNav = () => {
+		navDispatch({ type: 'OPEN_NAV' });
 	};
 
 	const toggleUser = (e) => {
@@ -63,6 +80,13 @@ const CreateChannel = (props) => {
 	};
 	return (
 		<div className='card h-full flex justify-center items-center '>
+			<div
+				style={{ color: 'white' }}
+				className='absolute right-5 top-3 cursor-pointer lg:hidden'
+				onClick={handleOpenNav}
+			>
+				<GiHamburgerMenu size={32} />
+			</div>
 			<div className='h-1/2 border w-6/12 flex flex-col gap-1 items-center overflow-y-auto container'>
 				<div className='mt-5'>
 					<h1 className='text-center title'>Create Channel</h1>
@@ -97,9 +121,8 @@ const CreateChannel = (props) => {
 								type='text'
 								className='p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent'
 								placeholder='search...'
-								onClick={() =>
-									setToggleUserList((t) => !t)
-								}
+								onFocus={handleFocus}
+								// onBlur={handleBlur}
 								value={search}
 								onChange={(e) =>
 									setSearch((s) => e.target.value)
@@ -143,9 +166,13 @@ const CreateChannel = (props) => {
 										key={user.id}
 										className='py-5 w-full flex justify-between items-center'
 									>
-										<span>{user.email}</span>
-										<button
-											className='px-4 py-1 bg-red-700 text-white hover:bg-red-500'
+										<span className='text-white font-bold'>
+											{user.email}
+										</span>
+
+										<div
+											style={{ color: 'red' }}
+											className='cursor-pointer'
 											onClick={() =>
 												setUsers(
 													users.filter(
@@ -156,8 +183,8 @@ const CreateChannel = (props) => {
 												)
 											}
 										>
-											Remove
-										</button>
+											<BsFillXCircleFill />
+										</div>
 									</li>
 								))}
 						</ul>

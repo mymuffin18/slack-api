@@ -13,7 +13,7 @@ const ChannelMemberModal = ({ getMembers, setToggleChannelMemberModal }) => {
 	};
 	return ReactDOM.createPortal(
 		<div className='modal-bg bg-darkish'>
-			<div className='card modal modal-size gap-2'>
+			<div className='card-modal modal modal-size gap-2'>
 				<div className='mt-5 overflow-y-auto'>
 					<div className='text-lg text-center'>
 						Channel Members

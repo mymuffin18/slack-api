@@ -16,6 +16,7 @@ import UsersContextProvider from './context/UsersContextProvider';
 import DirectMessage from './components/DirectMessage';
 import Messages from './components/Messages';
 import CreateChannel from './components/CreateChannel';
+import NavContextProvider from './context/NavContextProvider';
 
 function App() {
 	const { state } = useAuth();
@@ -31,49 +32,54 @@ function App() {
 		<>
 			<ChannelContextProvider>
 				<UsersContextProvider>
-					<BrowserRouter>
-						<Routes>
-							<Route path='/' element={redirectRoute} />
-							<Route
-								path='dashboard'
-								element={
-									<ProtectedRoutes>
-										<Dashboard />
-									</ProtectedRoutes>
-								}
-							>
+					<NavContextProvider>
+						<BrowserRouter>
+							<Routes>
 								<Route
-									path=''
-									element={<CreateChannel />}
+									path='/'
+									element={redirectRoute}
 								/>
 								<Route
-									path='channels/:id'
-									element={<Channel />}
-								/>
+									path='dashboard'
+									element={
+										<ProtectedRoutes>
+											<Dashboard />
+										</ProtectedRoutes>
+									}
+								>
+									<Route
+										path=''
+										element={<CreateChannel />}
+									/>
+									<Route
+										path='channels/:id'
+										element={<Channel />}
+									/>
+									<Route
+										path='messages/:id'
+										element={<Messages />}
+									/>
+									<Route
+										path='messages/'
+										element={<DirectMessage />}
+									/>
+								</Route>
 								<Route
-									path='messages/:id'
-									element={<Messages />}
+									path='register'
+									element={
+										state.login ? (
+											<Navigate
+												replace={false}
+												to='/dashboard'
+											/>
+										) : (
+											<Register />
+										)
+									}
 								/>
-								<Route
-									path='messages/'
-									element={<DirectMessage />}
-								/>
-							</Route>
-							<Route
-								path='register'
-								element={
-									state.login ? (
-										<Navigate
-											replace={false}
-											to='/dashboard'
-										/>
-									) : (
-										<Register />
-									)
-								}
-							/>
-						</Routes>
-					</BrowserRouter>
+							</Routes>
+						</BrowserRouter>
+					</NavContextProvider>
 				</UsersContextProvider>
 			</ChannelContextProvider>
 		</>

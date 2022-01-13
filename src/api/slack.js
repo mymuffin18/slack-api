@@ -121,8 +121,8 @@ export const getChannels = async (headers) => {
 };
 
 export const createChannel = async (users, channelName, headers) => {
-	let status;
 	let data = [];
+	let errors = [];
 	try {
 		const res = await axios.post(
 			`${API_URL}/channels`,
@@ -138,12 +138,12 @@ export const createChannel = async (users, channelName, headers) => {
 		);
 
 		data = res.data.data;
-		status = res.status;
+		errors = res.data.errors;
 	} catch (error) {
 		console.error(error.response);
 	}
 
-	return [data, status];
+	return [data, errors];
 };
 
 export const sendMessage = async (headers, id, receiverClass, body) => {
