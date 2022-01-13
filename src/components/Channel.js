@@ -3,7 +3,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import ReactMde from 'react-mde';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import useSWR from 'swr';
 import {
 	fetcher,
@@ -30,13 +30,14 @@ const Channel = () => {
 	const { handleOpenNav } = useNav();
 	let spanRef = useRef();
 	const inputRef = useRef();
+	const [selectedTab, setSelectedTab] = React.useState('write');
 
 	useEffect(() => {
 		(async () => {
 			const data = await getChannelDetail(state.headers, params.id);
 			setChannelData(data);
 		})();
-		inputRef.current.focus();
+		// inputRef.current.focus();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params.id, state.headers]);
 
@@ -107,7 +108,7 @@ const Channel = () => {
 	const handleSend = async (e) => {
 		e.preventDefault();
 		if (message === '') {
-			alert('nah');
+			alert('Invalid');
 		} else {
 			await sendMessage(
 				state.headers,
@@ -116,6 +117,7 @@ const Channel = () => {
 				message
 			);
 			setMessage('');
+			spanRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
 	};
 	return (
@@ -210,18 +212,57 @@ const Channel = () => {
 						<span ref={spanRef}></span>
 					</div>
 				</div>
-				<form onSubmit={(e) => handleSend(e)}>
-					<div className='h-20 flex items-center justify-center gap-3 px-3'>
-						<textarea
-							name=''
-							className='resize-none w-5/6 rounded-lg p-2'
-							value={message}
-							onChange={(e) => setMessage(e.target.value)}
-							ref={inputRef}
-						></textarea>
-						<button className='btn btn-primary' type='submit'>
-							Send
-						</button>
+				<form
+					onSubmit={(e) => handleSend(e)}
+					className='flex w-full'
+				>
+					<div className='h-full flex items-center justify-center gap-3 px-3 w-full'>
+						<div className='w-full'>
+							<MDEditor
+								value={message}
+								onChange={setMessage}
+								preview='edit'
+								fullscreen={false}
+								commands={[
+									commands.bold,
+									commands.codeBlock,
+									commands.italic,
+									commands.strikethrough,
+									commands.hr,
+									commands.code,
+									commands.unorderedListCommand,
+									commands.orderedListCommand,
+									commands.checkedListCommand,
+									commands.image,
+									commands.group(
+										[
+											commands.title1,
+											commands.title2,
+											commands.title3,
+											commands.title4,
+											commands.title5,
+											commands.title6,
+										],
+										{
+											name: 'title',
+											groupName: 'title',
+											buttonProps: {
+												'aria-label':
+													'Insert title',
+											},
+										}
+									),
+								]}
+							/>
+						</div>
+						<div>
+							<button
+								className='btn btn-primary'
+								type='submit'
+							>
+								Send
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>
