@@ -75,6 +75,8 @@ const CreateChannel = (props) => {
 				},
 			});
 			setBtnLoading(false);
+			setUsers([]);
+			setChannelName('');
 		} else {
 			notify({
 				type: 'ADD_NOTIFICATION',
