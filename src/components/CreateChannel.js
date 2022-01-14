@@ -269,7 +269,7 @@ const CreateChannel = (props) => {
 										Wait
 									</div>
 								) : (
-									<span>Login</span>
+									<span>Create Channel</span>
 								)}
 							</button>
 						</div>
