@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AuthContextProvider from './context/AuthContextProvider';
+import NotificationContextProvider from './context/NotificationContextProvider';
 
 ReactDOM.render(
 	<AuthContextProvider>
 		<div className='screen m-0'>
 			<div className='h-full background'>
-				<App />
+				<NotificationContextProvider>
+					<App />
+				</NotificationContextProvider>
 			</div>
 		</div>
 	</AuthContextProvider>,

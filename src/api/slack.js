@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from './url';
-
+import _ from 'lodash';
 export const getUserMessages = async (headers, id) => {
 	let data = [];
 	try {
@@ -138,7 +138,11 @@ export const createChannel = async (users, channelName, headers) => {
 		);
 
 		data = res.data.data;
-		errors = res.data.errors;
+		if (res.data.hasOwnProperty('errors')) {
+			errors = res.data.errors;
+		}
+		// if()
+		// errors = res.data.errors;
 	} catch (error) {
 		console.error(error.response);
 	}

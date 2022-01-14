@@ -2,17 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useAuth } from '../context/AuthContextProvider';
-
+import { Puff } from 'svg-loaders-react';
 function LoginForm() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState([]);
 	const { dispatch } = useAuth();
-	const handleLogin = async (e) => {
-		e.preventDefault();
+	const [loading, setLoading] = useState(false);
+
+	const handleLogin = async () => {
+		setLoading(true);
+		console.log('clicked');
 		const res = await login(email, password);
 		if (res.errors.length > 0) {
 			setError(...res.errors);
+			setLoading(false);
 		} else {
 			dispatch({
 				type: 'LOGIN',
@@ -22,6 +26,7 @@ function LoginForm() {
 					headers: res.headers,
 				},
 			});
+			setLoading(false);
 		}
 	};
 
@@ -197,10 +202,20 @@ function LoginForm() {
 						</span>
 					))}
 				<button
-					onClick={(e) => handleLogin(e)}
-					className='btn btn-primary'
+					onClick={handleLogin}
+					disabled={loading}
+					className={`btn btn-primary flex items-center justify-around ${
+						loading ? 'hover: cursor-wait' : ''
+					}`}
 				>
-					Login
+					{loading ? (
+						<div className='flex justify-around items-center gap-2 h-6'>
+							<Puff />
+							Logging in
+						</div>
+					) : (
+						<span>Login</span>
+					)}
 				</button>
 				<div className='flex justify-center'>
 					<Link
